@@ -4,10 +4,12 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { prototypeVehicles, type Vehicle, type VehicleCategory } from "../../lib/vehicles";
 import { VehicleCard } from "./VehicleCard";
+import { useLanguage } from "./LanguageContext";
 
 type Filter = "All" | VehicleCategory;
 
 export function HomeInventory() {
+  const { copy } = useLanguage();
   const [filter, setFilter] = useState<Filter>("All");
   const [vehicles, setVehicles] = useState<Vehicle[]>(prototypeVehicles);
 
@@ -29,12 +31,12 @@ export function HomeInventory() {
     <section className="inventory-section section-pad" id="inventory">
       <div className="section-heading split-heading">
         <div>
-          <p className="eyebrow">THE COLLECTION</p>
-          <h2>Vehicles, selected<br />with intention.</h2>
+          <p className="eyebrow">{copy.home.collection}</p>
+          <h2>{copy.home.collectionTitle}</h2>
         </div>
-        <div className="inventory-controls" role="group" aria-label="Filter featured vehicles">
+        <div className="inventory-controls" role="group" aria-label={copy.home.featuredFilter}>
           {(["All", "Brand New", "Refurbished"] as Filter[]).map((item) => (
-            <button key={item} type="button" className={filter === item ? "active" : ""} onClick={() => setFilter(item)}>{item}</button>
+            <button key={item} type="button" className={filter === item ? "active" : ""} onClick={() => setFilter(item)}>{item === "All" ? copy.common.all : item === "Brand New" ? copy.common.brandNew : copy.common.refurbished}</button>
           ))}
         </div>
       </div>
@@ -42,8 +44,8 @@ export function HomeInventory() {
         {visible.map((vehicle, index) => <VehicleCard key={vehicle.id} vehicle={vehicle} priority={index === 0} />)}
       </div>
       <div className="section-foot-link">
-        <Link href="/inventory">View complete inventory <span>↗</span></Link>
-        <p>Every live listing can include inspection details, gallery images and direct reservation support.</p>
+        <Link href="/inventory">{copy.home.completeInventory} <span>↗</span></Link>
+        <p>{copy.home.inventorySupport}</p>
       </div>
     </section>
   );
