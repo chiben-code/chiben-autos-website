@@ -4,11 +4,13 @@ import { useEffect, useMemo, useState } from "react";
 import { prototypeVehicles, type Vehicle, type VehicleCategory } from "../../lib/vehicles";
 import { useSiteSettings } from "../components/SiteSettingsContext";
 import { VehicleCard } from "../components/VehicleCard";
+import { useLanguage } from "../components/LanguageContext";
 
 type Filter = "All" | VehicleCategory;
 
 export function InventoryBrowser() {
   const settings = useSiteSettings();
+  const { copy } = useLanguage();
   const [vehicles, setVehicles] = useState<Vehicle[]>(prototypeVehicles);
   const [filter, setFilter] = useState<Filter>("All");
   const [query, setQuery] = useState("");
@@ -37,22 +39,22 @@ export function InventoryBrowser() {
       <div className="inventory-toolbar">
         <div className="inventory-controls">
           {(["All", "Brand New", "Refurbished"] as Filter[]).map((item) => (
-            <button key={item} type="button" className={filter === item ? "active" : ""} onClick={() => setFilter(item)}>{item}</button>
+            <button key={item} type="button" className={filter === item ? "active" : ""} onClick={() => setFilter(item)}>{item === "All" ? copy.common.all : item === "Brand New" ? copy.common.brandNew : copy.common.refurbished}</button>
           ))}
         </div>
         <label className="inventory-search">
-          <span>Search inventory</span>
-          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Model, body type or colour" />
+          <span>{copy.inventory.search}</span>
+          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={copy.inventory.searchPlaceholder} />
         </label>
       </div>
       <div className="inventory-results-meta">
-        <p>{visible.length} {visible.length === 1 ? "vehicle" : "vehicles"}</p>
-        <span>Listings update from the Chiben owner control.</span>
+        <p>{visible.length} {visible.length === 1 ? copy.common.vehicle : copy.common.vehicles}</p>
+        <span>{copy.inventory.listingsUpdate}</span>
       </div>
       <div className="vehicle-grid inventory-page-grid">
         {visible.map((vehicle, index) => <VehicleCard key={vehicle.id} vehicle={vehicle} priority={index < 2} />)}
       </div>
-      {!visible.length && <div className="empty-state"><strong>No exact match yet.</strong><p>Send Chiben Autos your requirements and we can help source the right vehicle.</p><a href={`https://wa.me/${settings.whatsapp.replace(/\D/g, "")}`}>Request a vehicle ↗</a></div>}
+      {!visible.length && <div className="empty-state"><strong>{copy.inventory.noMatch}</strong><p>{copy.inventory.noMatchBody}</p><a href={`https://wa.me/${settings.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(copy.whatsapp.findVehicle)}`}>{copy.inventory.request} ↗</a></div>}
     </>
   );
 }

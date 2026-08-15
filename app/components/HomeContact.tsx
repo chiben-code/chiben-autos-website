@@ -1,14 +1,16 @@
 "use client";
 
 import { WhatsAppLink, useSiteSettings } from "./SiteSettingsContext";
+import { useLanguage } from "./LanguageContext";
 
 export function HomeContact() {
   const settings = useSiteSettings();
+  const { copy } = useLanguage();
   return (
     <section className="whatsapp-cta section-pad">
-      <p className="eyebrow">YOUR NEXT CAR STARTS WITH A CONVERSATION</p>
-      <h2>Tell us what<br />you are looking for.</h2>
-      <WhatsAppLink className="button button-gold" message="Hello Chiben Autos, I would like help finding a vehicle.">Start on WhatsApp ↗</WhatsAppLink>
+      <p className="eyebrow">{copy.home.contactEyebrow}</p>
+      <h2>{copy.home.contactTitle}</h2>
+      <WhatsAppLink className="button button-gold" message={copy.whatsapp.findVehicle}>{copy.home.contactButton} ↗</WhatsAppLink>
       <p className="contact-note">{settings.phone} · {settings.email}</p>
     </section>
   );

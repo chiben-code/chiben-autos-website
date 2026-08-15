@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { LanguageProvider } from "./components/LanguageContext";
 import "./globals.css";
 import "./chiben-core.css";
 import "./chiben-pages.css";
@@ -27,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-motion="balanced" suppressHydrationWarning>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased"><LanguageProvider>{children}</LanguageProvider></body>
     </html>
   );
 }

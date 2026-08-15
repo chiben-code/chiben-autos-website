@@ -1,32 +1,29 @@
+"use client";
+
 import Link from "next/link";
 import { HomeInventory } from "./HomeInventory";
 import { PublicShell } from "./PublicShell";
 import { VehicleStory } from "./VehicleStory";
 import { HomeContact } from "./HomeContact";
-
-const services = [
-  ["01", "Vehicle sourcing", "Tell us what you want. We search, assess and help you secure the right vehicle locally or internationally."],
-  ["02", "Brokerage & agency", "A clearer transaction path for buyers, sellers and businesses that need representation."],
-  ["03", "Fleet management", "Practical acquisition and vehicle planning for growing teams and established organisations."],
-  ["04", "Leasing & hire purchase", "Structured ownership pathways subject to assessment, availability and agreed terms."],
-];
+import { useLanguage } from "./LanguageContext";
 
 export function HomePage() {
+  const { copy } = useLanguage();
   return (
     <PublicShell>
       <main>
         <VehicleStory />
 
         <section className="manifesto section-pad">
-          <p className="eyebrow">CHIBEN STANDARD</p>
+          <p className="eyebrow">{copy.home.standard}</p>
           <div className="manifesto-grid">
-            <h2>A good car should open possibilities, not introduce uncertainty.</h2>
+            <h2>{copy.home.manifestoTitle}</h2>
             <div>
-              <p>Chiben Autos brings disciplined presentation, responsive guidance and a more transparent buying experience to the Nigerian automobile market.</p>
+              <p>{copy.home.manifestoBody}</p>
               <div className="trust-row">
-                <span><strong>2026</strong> Incorporated</span>
-                <span><strong>Lagos</strong> Based</span>
-                <span><strong>RC 9235786</strong> Active company</span>
+                <span><strong>2026</strong> {copy.home.incorporated}</span>
+                <span><strong>Lagos</strong> {copy.home.based}</span>
+                <span><strong>RC 9235786</strong> {copy.home.activeCompany}</span>
               </div>
             </div>
           </div>
@@ -38,15 +35,15 @@ export function HomePage() {
           <div className="auction-panel">
             <div className="auction-orbit" aria-hidden="true"><span>CA</span></div>
             <div className="auction-copy">
-              <p className="eyebrow">CHIBEN AUCTIONS</p>
-              <h2>Remarkable vehicles.<br />A new way to bid.</h2>
-              <p>Verified bidding, clear reserve status and carefully presented lots are being prepared.</p>
-              <Link className="button button-outline" href="/auctions">See what is coming</Link>
+              <p className="eyebrow">{copy.home.auctionEyebrow}</p>
+              <h2>{copy.home.auctionTitle}</h2>
+              <p>{copy.home.auctionBody}</p>
+              <Link className="button button-outline" href="/auctions">{copy.home.auctionLink}</Link>
             </div>
             <div className="coming-card">
-              <span>STATUS</span>
-              <strong>COMING<br />SOON</strong>
-              <small>Join the early-access list</small>
+              <span>{copy.home.status}</span>
+              <strong>{copy.home.comingSoon}</strong>
+              <small>{copy.home.earlyAccess}</small>
             </div>
           </div>
         </section>
@@ -54,18 +51,18 @@ export function HomePage() {
         <section className="services-preview section-pad">
           <div className="section-heading split-heading">
             <div>
-              <p className="eyebrow">BEYOND THE SHOWROOM</p>
-              <h2>Automotive services<br />built around movement.</h2>
+              <p className="eyebrow">{copy.home.servicesEyebrow}</p>
+              <h2>{copy.home.servicesTitle}</h2>
             </div>
-            <p>Our registered business scope gives Chiben Autos room to serve individual buyers, vehicle owners and corporate fleets as the company grows.</p>
+            <p>{copy.home.servicesBody}</p>
           </div>
           <div className="service-list">
-            {services.map(([number, title, description]) => (
-              <article key={number}>
-                <span>{number}</span>
-                <h3>{title}</h3>
-                <p>{description}</p>
-                <Link href="/services" aria-label={`Learn about ${title}`}>↗</Link>
+            {copy.home.services.map((service, index) => (
+              <article key={service.title}>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <h3>{service.title}</h3>
+                <p>{service.description}</p>
+                <Link href="/services" aria-label={`${copy.home.learnAbout} ${service.title}`}>↗</Link>
               </article>
             ))}
           </div>
